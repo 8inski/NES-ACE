@@ -1,0 +1,209 @@
+LINE 8726: Undocumented Instruction
+STP
+
+LINE 8805: Undocumented Instruction
+AHX $8444,Y
+
+LINE 8806: Undocumented Instruction
+AHX ($44),Y
+
+LINE 8810: Undocumented Instruction
+ALR #$44
+
+LINE 8814: Undocumented Instruction
+ANC #$44
+
+LINE 8829: Undocumented Instruction
+ARR #$44
+
+LINE 8841: Undocumented Instruction
+AXS #$44
+
+LINE 8873: Undocumented Instruction
+DCP $44
+
+LINE 8874: Undocumented Instruction
+DCP $44,X
+
+LINE 8875: Undocumented Instruction
+DCP $8444
+
+LINE 8876: Undocumented Instruction
+DCP $8444,X
+
+LINE 8877: Undocumented Instruction
+DCP $8444,Y
+
+LINE 8878: Undocumented Instruction
+DCP ($44,X)
+
+LINE 8879: Undocumented Instruction
+DCP ($44),Y
+
+LINE 8908: Undocumented Instruction
+ISC $44
+
+LINE 8909: Undocumented Instruction
+ISC $44,X
+
+LINE 8910: Undocumented Instruction
+ISC $8444
+
+LINE 8911: Undocumented Instruction
+ISC $8444,X
+
+LINE 8912: Undocumented Instruction
+ISC $8444,Y
+
+LINE 8913: Undocumented Instruction
+ISC ($44,X)
+
+LINE 8914: Undocumented Instruction
+ISC ($44),Y
+
+LINE 8927: Undocumented Instruction
+LAS $8444,Y
+
+LINE 8931: Undocumented Instruction
+LAX #$44
+
+LINE 8932: Undocumented Instruction
+LAX $44
+
+LINE 8933: Undocumented Instruction
+LAX $44,Y
+
+LINE 8934: Undocumented Instruction
+LAX $8444
+
+LINE 8935: Undocumented Instruction
+LAX $8444,Y
+
+LINE 8936: Undocumented Instruction
+LAX ($44,X)
+
+LINE 8937: Undocumented Instruction
+LAX ($44),Y
+
+LINE 8977: Undocumented Instruction
+NOP #$44
+
+LINE 8978: Undocumented Instruction
+NOP $44
+
+LINE 8979: Undocumented Instruction
+NOP $44,X
+
+LINE 8980: Undocumented Instruction
+NOP $8444
+
+LINE 8981: Undocumented Instruction
+NOP $8444,X
+
+LINE 8996: Undocumented Instruction
+RLA $44
+
+LINE 8997: Undocumented Instruction
+RLA $44,X
+
+LINE 8998: Undocumented Instruction
+RLA $8444
+
+LINE 8999: Undocumented Instruction
+RLA $8444,X
+
+LINE 9000: Undocumented Instruction
+RLA $8444,Y
+
+LINE 9001: Undocumented Instruction
+RLA ($44,X)
+
+LINE 9002: Undocumented Instruction
+RLA ($44),Y
+
+LINE 9022: Undocumented Instruction
+RRA $44
+
+LINE 9023: Undocumented Instruction
+RRA $44,X
+
+LINE 9024: Undocumented Instruction
+RRA $8444
+
+LINE 9025: Undocumented Instruction
+RRA $8444,X
+
+LINE 9026: Undocumented Instruction
+RRA $8444,Y
+
+LINE 9027: Undocumented Instruction
+RRA ($44,X)
+
+LINE 9028: Undocumented Instruction
+RRA ($44),Y
+
+LINE 9032: Undocumented Instruction
+SAX $44
+
+LINE 9033: Undocumented Instruction
+SAX $44,Y
+
+LINE 9034: Undocumented Instruction
+SAX $8444
+
+LINE 9035: Undocumented Instruction
+SAX ($44,X)
+
+LINE 9050: Undocumented Instruction
+SHX $8444,Y
+
+LINE 9054: Undocumented Instruction
+SHY $8444,X
+
+LINE 9058: Undocumented Instruction
+SLO $44
+
+LINE 9059: Undocumented Instruction
+SLO $44,X
+
+LINE 9060: Undocumented Instruction
+SLO $8444
+
+LINE 9061: Undocumented Instruction
+SLO $8444,X
+
+LINE 9062: Undocumented Instruction
+SLO $8444,Y
+
+LINE 9063: Undocumented Instruction
+SLO ($44,X)
+
+LINE 9064: Undocumented Instruction
+SLO ($44),Y
+
+LINE 9068: Undocumented Instruction
+SRE $44
+
+LINE 9069: Undocumented Instruction
+SRE $44,X
+
+LINE 9070: Undocumented Instruction
+SRE $8444
+
+LINE 9071: Undocumented Instruction
+SRE $8444,X
+
+LINE 9072: Undocumented Instruction
+SRE $8444,Y
+
+LINE 9073: Undocumented Instruction
+SRE ($44,X)
+
+LINE 9074: Undocumented Instruction
+SRE ($44),Y
+
+LINE 9100: Undocumented Instruction
+TAS $8444,Y
+
+LINE 9104: Undocumented Instruction
+XAA #$44

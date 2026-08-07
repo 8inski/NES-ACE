@@ -1,0 +1,27 @@
+# Node and Electron
+Source/node_modules/
+Source/.vite/
+Source/out/
+Source/dist/
+Source/packaging/
+Source/.eslintcache
+Source/*.tsbuildinfo
+
+# C++ Build Artifacts
+Source/backend/*.exe
+Source/backend/cmd/*.exe
+*.o
+*.obj
+*.pdb
+*.ilk
+*.dll
+
+# Logs and Local Environment
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.*
+.DS_Store
+Thumbs.db

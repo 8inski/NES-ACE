@@ -1,0 +1,968 @@
+
+/* ================================== Fonts ================================== */
+
+@font-face {
+	font-family: "futuristic";
+	font-style: normal;
+	font-weight: normal;
+	src: url("./assets/font/Nasalization.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "jet-brains";
+	font-style: normal;
+	font-weight: normal;
+	src: url("./assets/font/JetBrainsMono-Medium.woff2") format("woff2");
+}
+
+/* ============================== Design Tokens ============================== */
+
+:root {
+	
+	--accent: rgb(100, 200, 255);
+	--accent-bright: rgb(145, 225, 255);
+	--accent-faded: #527487;
+
+	--app-background: #1e2329;
+	--carbon-background: #0e1217;
+	--widget-background: #141719;
+
+	--frame-border: #39414a;
+	--widget-border: #555d66;
+
+	--transition-hover-focus: 160ms;
+	--transition-state: 100ms;
+
+	--carbon-image:
+		linear-gradient(
+			to bottom,
+			rgba(255, 255, 255, 0.035),
+			rgba(0, 0, 0, 0.14)
+		),
+		repeating-linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.045) 0,
+			rgba(255, 255, 255, 0.045) 1px,
+			transparent 1px,
+			transparent 4px
+		),
+		repeating-linear-gradient(
+			45deg,
+			rgba(0, 0, 0, 0.14) 0,
+			rgba(0, 0, 0, 0.14) 1px,
+			transparent 1px,
+			transparent 4px
+		);
+
+	--carbon-surface-image:
+		radial-gradient(
+			ellipse at 50% 46px,
+			rgba(255, 255, 255, 0.035),
+			transparent 57%
+		),
+		linear-gradient(
+			to bottom,
+			transparent 0,
+			transparent 25px,
+			rgba(255, 255, 255, 0.011) 35%,
+			rgba(0, 0, 0, 0.073) 100%
+		),
+		var(--carbon-image);
+}
+
+@property --scrollbar-thumb-color {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: rgba(0, 0, 0, 0.15);
+}
+
+/* ========================= Global Reset/Typography ========================= */
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	overscroll-behavior: none;
+	
+	font-family: "futuristic", sans-serif;
+	color: var(--accent);
+}
+
+button,
+label {
+	font: inherit;
+	color: inherit;
+}
+
+input,
+select,
+textarea,
+.codejar-input {
+	font-family: "jet-brains", monospace;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 1;
+	color: inherit;
+}
+
+textarea,
+.codejar-input {
+	line-height: 1.25;
+}
+
+::selection {
+	background: var(--accent);
+	color: #fff;
+	text-shadow: none;
+}
+
+/* ============================ Application Shell ============================ */
+
+.app-window {
+	
+	width: 100%;
+	height: 100%;
+	padding: 13px;
+	
+	background: var(--app-background);
+}
+
+/* ========================= Shared Carbon Workspace ========================= */
+
+.tab-workspace {
+	
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	isolation: isolate;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	min-height: 0;
+
+	background: var(--app-background);
+	border: 0;
+	box-shadow: none;
+}
+
+/*
+Paint and clip the carbon surface below the 33px tab rail. Keeping the surface on
+this rounded layer prevents rogue pixels at the panel corners.
+*/
+.tab-workspace::before {
+	
+	content: "";
+	
+	position: absolute;
+	z-index: 0;
+	top: 33px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	
+	border-radius: 0 4px 4px 4px;
+	
+	box-shadow:
+		inset 14px 0 21px -19px rgba(0, 0, 0, 0.94),
+		inset -14px 0 21px -19px rgba(0, 0, 0, 0.94),
+		inset 0 -17px 27px -21px rgba(0, 0, 0, 0.98);
+	
+	pointer-events: none;
+}
+
+/*
+Every visible carbon area samples the same viewport-fixed image so the active
+tab, its lower lip, and the workspace have no tonal seam.
+*/
+.tab-workspace::before,
+[role="tab"][aria-selected="true"],
+[role="tab"][aria-selected="true"]::after {
+	
+	background-color: var(--carbon-background);
+	background-image: var(--carbon-surface-image);
+	
+	background-size:
+		100vw 100vh,
+		100vw 100vh,
+		100vw 100vh,
+		4px 4px,
+		4px 4px;
+	
+	background-position:
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		0 0;
+	
+	background-repeat:
+		no-repeat,
+		no-repeat,
+		no-repeat,
+		repeat,
+		repeat;
+	
+	background-attachment:
+		fixed,
+		fixed,
+		fixed,
+		fixed,
+		fixed;
+}
+
+/* ================================ Tab Rail ================================= */
+
+.tab-list {
+	
+	position: relative;
+	z-index: 3;
+	display: flex;
+	flex: 0 0 33px;
+	align-items: stretch;
+	gap: 0;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	overflow: visible;
+
+	background: var(--app-background);
+	border: 0;
+}
+
+/* ========================== Tabs: Shared Styling =========================== */
+
+[role="tab"] {
+	
+	appearance: none;
+	-webkit-appearance: none;
+
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	height: 33px;
+	margin: 0;
+	padding: 0 10px;
+
+	border: 1px solid var(--frame-border);
+	border-radius: 4px 4px 0 0;
+	font: inherit;
+	font-size: 13px;
+	line-height: 1;
+	color: var(--accent);
+	
+	white-space: nowrap;
+	cursor: pointer;
+	
+	outline: none;
+}
+
+/* Merge adjacent borders so the tabs read as one file-folder-style row. */
+[role="tab"] + [role="tab"] {
+	margin-left: -1px;
+}
+
+/* ========================== Tabs: Inactive State =========================== */
+
+[role="tab"][aria-selected="false"] {
+	
+	z-index: 1;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#343a42 0%,
+			#292e35 42%,
+			#1a1e24 100%
+		);
+	
+	border-bottom: 0;
+	
+	box-shadow:
+		0 2px 4px -1px rgba(0, 0, 0, 0.48),
+		inset 0 1px rgba(255, 255, 255, 0.13),
+		inset 1px 0 rgba(255, 255, 255, 0.032),
+		inset -1px 0 rgba(0, 0, 0, 0.52),
+		inset 0 -1px 2px -1px rgba(0, 0, 0, 0.90);
+	
+	text-shadow:
+		0 0 5px rgba(100, 200, 255, 0.12);
+	
+	transition:
+		box-shadow var(--transition-state) ease,
+		filter var(--transition-hover-focus) ease;
+}
+
+/*
+Draw the inactive tab's lower edge one pixel outside its fixed height so it
+aligns exactly with the active panel's top border.
+*/
+[role="tab"][aria-selected="false"]::after {
+	
+	content: "";
+	
+	position: absolute;
+	z-index: 2;
+	right: 0;
+	bottom: -1px;
+	left: 0;
+	height: 1px;
+	
+	background: var(--frame-border);
+	
+	pointer-events: none;
+}
+
+/* =========================== Tabs: Active State ============================ */
+
+[role="tab"][aria-selected="true"] {
+	
+	position: relative;
+	z-index: 4;
+	overflow: visible;
+
+	/* The brighter gradient border is painted over this neutral base border. */
+	border: 1px solid var(--frame-border);
+	border-bottom: 0;
+	
+	box-shadow:
+		0 2px 5px -3px rgba(0, 0, 0, 0.54),
+		inset 5px 0 8px -7px rgba(0, 0, 0, 0.78),
+		inset 0 1px rgba(255, 255, 255, 0.067),
+		inset -1px 0 rgba(0, 0, 0, 0.21);
+	
+	text-shadow: 0 0 6px rgba(100, 200, 255, 0.25);
+}
+
+/* Paint a one-pixel border that fades from bright blue into frame grey. */
+[role="tab"][aria-selected="true"]::before {
+	
+	content: "";
+	
+	position: absolute;
+	z-index: 5;
+	inset: -1px -1px 0;
+	padding: 1px;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			var(--accent-bright) 0%,
+			var(--accent) 25%,
+			var(--accent-faded) 65%,
+			var(--frame-border) 100%
+		);
+	
+	border-radius: 4px 4px 0 0;
+
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	
+	-webkit-mask-composite: xor;
+	
+	mask-composite: exclude;
+	
+	pointer-events: none;
+}
+
+/*
+Extend carbon four pixels below the active tab to cover the panel's top border
+and create a seamless file-folder connection.
+*/
+[role="tab"][aria-selected="true"]::after {
+	
+	content: "";
+	
+	position: absolute;
+	z-index: 5;
+	right: 0;
+	bottom: -3px;
+	left: 0;
+	height: 4px;
+	
+	box-shadow: inset 5px 0 8px -7px rgba(0, 0, 0, 0.78);
+	
+	pointer-events: none;
+}
+
+/* ======================== Tabs: Pointer Interaction ======================== */
+
+[role="tab"][aria-selected="false"]:hover {
+	filter: brightness(1.2);
+}
+
+[role="tab"][aria-selected="false"]:active {
+	
+	box-shadow:
+		0 1px 1px rgba(0, 0, 0, 0.30),
+		inset 0 2px 5px rgba(0, 0, 0, 0.74),
+		inset 0 1px rgba(255, 255, 255, 0.013);
+}
+
+/* ============================ Active Tab Panel ============================= */
+
+[role="tabpanel"] {
+	background: transparent;
+}
+
+[role="tabpanel"]:not([hidden]) {
+	
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+	
+	border: 1px solid var(--frame-border);
+	border-radius: 0 4px 4px 4px;
+
+	/*
+	Keep only the panel's exterior lift and subtle inner rim. Surface shading
+	belongs to the shared carbon layer to avoid a tab junction seam.
+	*/
+	box-shadow:
+		0 8px 17px -7px rgba(0, 0, 0, 0.68),
+		0 2px 6px -3px rgba(0, 0, 0, 0.58),
+		inset 0 0 0 1px rgba(255, 255, 255, 0.017);
+}
+
+/* Keep panel contents above the shared carbon surface. */
+[role="tabpanel"]:not([hidden]) > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* ============================ Left Control Pane ============================ */
+
+.control-pane {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	justify-content: space-evenly;
+	width: 23%;
+	min-width: 0;
+	min-height: 0;
+	padding: 16px 20px;
+}
+
+.entry {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.tas-selectors {
+	
+	display: grid;
+	
+	grid-template-columns:
+		minmax(0, 3fr)
+		minmax(0, 2fr);
+	
+	gap: 6px;
+	min-width: 0;
+}
+
+.tas-selector {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	min-width: 0;
+}
+
+
+.entry,
+.undocumented {
+	height: 42px;
+}
+
+label {
+	font-size: 13px;
+	line-height: 1;
+	text-shadow: 0 0 5px rgba(100, 200, 255, 0.16);
+}
+
+.input-label {
+	padding-left: 1px;
+}
+
+/* ======================== Text Input/Select Fields ========================= */
+
+input:not([type="checkbox"]),
+select {
+	
+	width: 100%;
+	min-width: 0;
+	height: 24px;
+	padding: 4px 7px;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#181c20,
+			var(--widget-background)
+		);
+	
+	border: 1px solid var(--widget-border);
+	border-bottom-color: #707881;
+	border-radius: 4px;
+	
+	box-shadow:
+		0 2px 5px -3px rgba(0, 0, 0, 0.52),
+		0 1px 1px rgba(0, 0, 0, 0.31),
+		inset 0 2px 4px rgba(0, 0, 0, 0.77),
+		inset 0 1px rgba(255, 255, 255, 0.032);
+	
+	outline: none;
+	
+	transition:
+		border-color var(--transition-hover-focus) ease,
+		box-shadow var(--transition-hover-focus) ease;
+}
+
+input:not([type="checkbox"]):hover,
+input:not([type="checkbox"]):focus,
+select:hover,
+select:focus {
+	
+	border-color: var(--accent);
+	
+	box-shadow:
+		0 2px 5px -3px rgba(0, 0, 0, 0.52),
+		0 1px 1px rgba(0, 0, 0, 0.31),
+		inset 0 2px 4px rgba(0, 0, 0, 0.80),
+		0 0 5px rgba(100, 200, 255, 0.19);
+}
+
+/* ========================== Custom Select Picker =========================== */
+
+select,
+select::picker(select) {
+	appearance: base-select;
+}
+
+select {
+	display: flex;
+	align-items: center;
+	gap: 0;
+}
+
+select::picker(select) {
+	
+	margin: 3px 0 0;
+	padding: 0;
+	
+	background: var(--widget-background);
+	border: 1px solid var(--widget-border);
+	border-radius: 4px;
+	color: var(--accent);
+	
+	box-shadow:
+		0 6px 12px -6px rgba(0, 0, 0, 0.72),
+		0 2px 4px rgba(0, 0, 0, 0.42);
+}
+
+select option,
+select option:checked {
+	
+	padding: 6px 8px;
+	
+	background-color: var(--widget-background);
+	color: var(--accent);
+	
+	transition:
+		background-color var(--transition-hover-focus) ease,
+		color var(--transition-hover-focus) ease;
+}
+
+select option:hover,
+select option:focus,
+select option:focus-visible {
+	
+	background-color: var(--accent);
+	color: #fff;
+	box-shadow: none;
+	
+	outline: none;
+}
+
+/* ========================== Undocumented Checkbox ========================== */
+
+.undocumented {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.undocumented label {
+	line-height: 1;
+	cursor: pointer;
+}
+
+input[type="checkbox"] {
+	
+	appearance: none;
+	-webkit-appearance: none;
+	
+	display: grid;
+	flex: 0 0 26px;
+	place-content: center;
+	width: 26px;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#181c20,
+			var(--widget-background)
+		);
+	
+	border: 1px solid var(--widget-border);
+	border-radius: 2px;
+	
+	box-shadow:
+		0 2px 4px -2px rgba(0, 0, 0, 0.65),
+		inset 0 1px 2px rgba(0, 0, 0, 0.7),
+		inset 0 1px rgba(255, 255, 255, 0.035);
+	
+	cursor: pointer;
+	
+	outline: none;
+	
+	transition:
+		border-color var(--transition-state) ease,
+		box-shadow var(--transition-state) ease;
+}
+
+/* Use the warning-triangle SVG as the checked-state glyph. */
+input[type="checkbox"]::before {
+	
+	content: "";
+	
+	width: 18px;
+	height: 18px;
+	
+	background-color: #fff;
+	
+	-webkit-mask:
+		url("./assets/svg/warning-triangle.svg")
+		center / contain
+		no-repeat;
+	
+	mask:
+		url("./assets/svg/warning-triangle.svg")
+		center / contain
+		no-repeat;
+	
+	opacity: 0;
+	
+	transform: scale(0.65);
+	
+	transition:
+		opacity var(--transition-state) ease,
+		transform var(--transition-state) ease;
+}
+
+input[type="checkbox"]:checked {
+	
+	background: var(--accent);
+	border-color: var(--accent);
+	
+	box-shadow:
+		0 0 6px rgba(100, 200, 255, 0.28),
+		inset 0 1px rgba(255, 255, 255, 0.25);
+}
+
+input[type="checkbox"]:checked::before {
+	opacity: 1;
+	transform: scale(1);
+}
+
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus-visible {
+	
+	border-color: var(--accent);
+	
+	outline: none;
+	
+	transition:
+		border-color var(--transition-hover-focus) ease,
+		box-shadow var(--transition-state) ease;
+}
+
+/* ============================= Control Buttons ============================= */
+
+.control-button {
+	
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#191d21,
+			var(--widget-background)
+		);
+	
+	border: 1px solid var(--accent);
+	border-radius: 4px;
+	
+	box-shadow:
+		0 5px 9px -5px rgba(0, 0, 0, 0.72),
+		0 2px 3px rgba(0, 0, 0, 0.52),
+		inset 0 1px rgba(255, 255, 255, 0.055),
+		inset 1px 0 rgba(255, 255, 255, 0.012),
+		inset -1px 0 rgba(0, 0, 0, 0.25),
+		inset 0 -1px rgba(0, 0, 0, 0.37);
+	
+	cursor: pointer;
+	
+	outline: none;
+	
+	transition:
+		box-shadow var(--transition-state) ease,
+		filter var(--transition-hover-focus) ease;
+}
+
+.control-button:hover {
+	filter: brightness(1.2);
+}
+
+.control-button:active {
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#111417,
+			#191d21
+		);
+	
+	box-shadow:
+		0 1px 2px -1px rgba(0, 0, 0, 0.48),
+		inset 0 3px 5px rgba(0, 0, 0, 0.76),
+		inset 0 1px rgba(255, 255, 255, 0.013);
+}
+
+/* =========================== Control Button Icon =========================== */
+
+.button-icon {
+	
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	
+	border-right: 0;
+}
+
+.button-icon::after {
+	
+	content: "";
+	
+	position: absolute;
+	top: 8px;
+	right: 0;
+	bottom: 8px;
+	width: 1px;
+	
+	background: var(--frame-border);
+	
+	pointer-events: none;
+}
+
+.button-icon svg {
+	
+	display: block;
+	width: 22px;
+	height: 22px;
+	
+	fill: currentColor;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+/* ========================== Control Button Label =========================== */
+
+.button-label {
+	
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 16px;
+	
+	text-shadow:
+		0 0 5px rgba(100, 200, 255, 0.14);
+}
+
+/* ============================ Text Editor Pane ============================= */
+
+.text-pane {
+	display: grid;
+	flex: 1;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 20px;
+	min-width: 0;
+	min-height: 0;
+	padding: 20px;
+}
+.split-text-pane {
+	grid-template-columns:
+		minmax(0, 45fr)
+		minmax(0, 55fr);
+}
+
+textarea,
+.codejar-input {
+	
+	--scrollbar-thumb-color: rgba(0, 0, 0, 0.15);
+
+	width: 100%;
+	min-width: 0;
+	min-height: 0;
+	padding: 10px;
+	overflow: auto;
+	
+	background:
+		linear-gradient(
+			to bottom,
+			#171b1f,
+			var(--widget-background)
+		);
+	
+	border: 1px solid var(--widget-border);
+	border-radius: 4px;
+	
+	box-shadow:
+		0 6px 12px -6px rgba(0, 0, 0, 0.72),
+		0 2px 4px rgba(0, 0, 0, 0.42),
+		inset 0 2px 5px rgba(0, 0, 0, 0.79),
+		inset 1px 0 rgba(255, 255, 255, 0.012),
+		inset -1px 0 rgba(0, 0, 0, 0.20),
+		inset 0 1px rgba(255, 255, 255, 0.032);
+	
+	outline: 1px solid transparent;
+	outline-offset: 0;
+	
+	transition:
+		border-color var(--transition-hover-focus) ease,
+		outline-color var(--transition-hover-focus) ease,
+		--scrollbar-thumb-color var(--transition-hover-focus) ease;
+}
+
+textarea {
+	resize: none;
+}
+
+textarea:hover,
+textarea:focus,
+.codejar-input:hover,
+.codejar-input:focus {
+	
+	border-color: var(--accent);
+	
+	box-shadow:
+		0 6px 12px -6px rgba(0, 0, 0, 0.72),
+		0 2px 4px rgba(0, 0, 0, 0.42),
+		inset 0 2px 5px rgba(0, 0, 0, 0.81),
+		0 0 6px rgba(100, 200, 255, 0.17);
+	
+	outline-color: rgba(100, 200, 255, 0.14);
+	
+	--scrollbar-thumb-color: rgba(100, 200, 255, 0.58);
+}
+
+textarea::-webkit-scrollbar,
+.codejar-input::-webkit-scrollbar {
+	
+	width: 9px;
+	height: 9px;
+	
+	cursor: default;
+}
+
+textarea::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-corner,
+.codejar-input::-webkit-scrollbar-track,
+.codejar-input::-webkit-scrollbar-corner {
+	
+	background: transparent;
+	
+	cursor: default;
+}
+
+/*
+The transparent border visually narrows the thumb while preserving a comfortable
+draggable area.
+*/
+textarea::-webkit-scrollbar-thumb,
+.codejar-input::-webkit-scrollbar-thumb {
+	
+	min-height: 28px;
+
+	background-color: var(--scrollbar-thumb-color);
+	background-clip: padding-box;
+
+	border: 2px solid transparent;
+	border-radius: 999px;
+	
+	cursor: default;
+}
+
+textarea::-webkit-scrollbar-button,
+.codejar-input::-webkit-scrollbar-button {
+	cursor: default;
+}
+
+
+/* =========================== CodeJar Additions ============================ */
+
+.codejar-input {
+	tab-size: 4;
+	caret-color: var(--accent);
+}
+
+.input-textarea {
+	white-space: pre;
+	overflow-wrap: normal;
+	word-break: normal;
+}
+
+.ppu-payload-input {
+	white-space: break-spaces;
+	overflow-x: hidden;
+	overflow-wrap: anywhere;
+	word-break: break-all;
+}
+
+::highlight(assembler-error),
+.assembler-error-line {
+	
+	color: rgb(255, 105, 105);
+	
+	text-shadow:
+		0 0 5px rgba(255, 105, 105, 0.26);
+}

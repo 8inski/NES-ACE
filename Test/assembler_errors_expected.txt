@@ -1,0 +1,187 @@
+62 Errors Found:
+
+LINE 10: Missing Origin Directive
+BeforeOriginLabel:
+
+LINE 11: Missing Origin Directive
+LDA #$01
+
+LINE 12: Missing Origin Directive
+.byte $01
+
+LINE 13: Missing Origin Directive
+.word $1234
+
+LINE 18: Syntax Error
+BROKEN
+
+LINE 19: Syntax Error
+.unknown $1234
+
+LINE 20: Syntax Error
+THIS IS NOT VALID
+
+LINE 21: Syntax Error
+.org
+
+LINE 22: Syntax Error
+.byte
+
+LINE 25: Invalid Label
+:
+
+LINE 26: Invalid Label
+1START:
+
+LINE 27: Invalid Label
+A:
+
+LINE 28: Invalid Label
+BAD-NAME:
+
+LINE 29: Invalid Label
+$BAD:
+
+LINE 32: Invalid Instruction
+XYZ
+
+LINE 33: Invalid Instruction
+QZZ $10
+
+LINE 34: Invalid Instruction
+ABC #$01
+
+LINE 37: Invalid Operand
+LDA #
+
+LINE 38: Invalid Operand
+LDA #$1234
+
+LINE 39: Invalid Operand
+LDA ($1234,X)
+
+LINE 40: Invalid Operand
+LDA ($10)
+
+LINE 41: Invalid Operand
+LDA $10,Z
+
+LINE 42: Invalid Operand
+LDA [$10]
+
+LINE 43: Invalid Operand
+BNE #$1234
+
+LINE 44: Invalid Operand
+BNE $10
+
+LINE 45: Invalid Operand
+CLC $10
+
+LINE 48: Invalid Addressing Mode
+BIT #$10
+
+LINE 49: Invalid Addressing Mode
+STX $10,X
+
+LINE 50: Invalid Addressing Mode
+STY $10,Y
+
+LINE 51: Invalid Addressing Mode
+JMP $10
+
+LINE 52: Invalid Addressing Mode
+JSR ($1234)
+
+LINE 53: Invalid Addressing Mode
+LDX $10,X
+
+LINE 56: Invalid Origin Directive
+.org MISSING_ORIGIN
+
+LINE 57: Invalid Origin Directive
+.org $80
+
+LINE 58: Invalid Origin Directive
+.org #$8000
+
+LINE 59: Invalid Origin Directive
+.org $10000
+
+LINE 60: Invalid Origin Directive
+.org <$8000
+
+LINE 63: Invalid Constant Directive
+.const NO_EQUALS
+
+LINE 64: Invalid Constant Directive
+.const TOO=MANY=EQUALS
+
+LINE 65: Invalid Constant Directive
+.const 1BAD=$1234
+
+LINE 66: Invalid Constant Directive
+.const BYTE_CONST=$12
+
+LINE 67: Invalid Constant Directive
+.const SYMBOL_CONST=UNKNOWN_CONST
+
+LINE 68: Invalid Constant Directive
+.const WRAPPED_CONST=#$1234
+
+LINE 69: Invalid Constant Directive
+.const LARGE_CONST=$10000
+
+LINE 70: Invalid Constant Directive
+.const COMMA_CONST=$1234,
+
+LINE 73: Invalid Data Directive
+.byte $1234
+
+LINE 74: Invalid Data Directive
+.word $12
+
+LINE 75: Invalid Data Directive
+.byte #$10
+
+LINE 76: Invalid Data Directive
+.word <$1234
+
+LINE 77: Invalid Data Directive
+.byte $10,,$11
+
+LINE 78: Invalid Data Directive
+.byte $GG
+
+LINE 79: Invalid Data Directive
+.word $10000
+
+LINE 83: Duplicate Symbol
+.const DUP_CONST=$5678
+
+LINE 85: Duplicate Symbol
+DUP_LABEL:
+
+LINE 87: Duplicate Symbol
+CROSS_SYMBOL:
+
+LINE 89: Duplicate Symbol
+.const LABEL_THEN_CONST=$3333
+
+LINE 101: Branch Out of Range
+BNE ForwardInvalidTarget
+
+LINE 114: Branch Out of Range
+BNE BackwardInvalidTarget
+
+LINE 118: Undefined Symbol
+LDA MISSING_ABSOLUTE
+
+LINE 119: Undefined Symbol
+JMP MISSING_JUMP
+
+LINE 120: Undefined Symbol
+.word MISSING_WORD
+
+LINE 121: Undefined Symbol
+.byte <MISSING_BYTE

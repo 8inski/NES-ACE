@@ -1,0 +1,244 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>NES ACE</title>
+
+		<!-- Keep the Renderer Hidden until Its CSS, Fonts and Layout Are Ready. -->
+		<style>
+			html {
+				background: #1c2127;
+			}
+
+			html:not(.renderer-ready) body {
+				visibility: hidden;
+			}
+		</style>
+
+		<script type="module" src="/src/renderer.ts"></script>
+	</head>
+
+	<body>
+
+		<div class="app-window">
+
+			<main class="tab-workspace">
+
+				<nav class="tab-list" role="tablist" aria-label="NES ACE tools">
+
+					<button
+						type="button"
+						role="tab"
+						id="tab-glossary"
+						aria-controls="panel-glossary"
+						aria-selected="true"
+						tabindex="-1"
+					>
+						GLOSSARY
+					</button>
+
+					<button
+						type="button"
+						role="tab"
+						id="tab-assembler"
+						aria-controls="panel-assembler"
+						aria-selected="false"
+						tabindex="-1"
+					>
+						ASSEMBLER
+					</button>
+
+					<button
+						type="button"
+						role="tab"
+						id="tab-ppu-converter"
+						aria-controls="panel-ppu-converter"
+						aria-selected="false"
+						tabindex="-1"
+					>
+						PPU CONVERTER
+					</button>
+
+					<button
+						type="button"
+						role="tab"
+						id="tab-tas-converter"
+						aria-controls="panel-tas-converter"
+						aria-selected="false"
+						tabindex="-1"
+					>
+						TAS CONVERTER
+					</button>
+
+				</nav>
+
+				<section
+					role="tabpanel"
+					id="panel-glossary"
+					aria-labelledby="tab-glossary"
+				>
+					<div class="control-pane">
+						
+						<div class="entry">
+							<label class="input-label" for="index-entry">6502 MNEMONIC</label>
+							<input type="text" id="index-entry">
+						</div>
+						
+						<button type="button" class="control-button" id="glossary-search" tabindex="-1">
+							<span class="button-icon" data-icon="search" aria-hidden="true"></span>
+							<span class="button-label">SEARCH</span>
+						</button>
+						
+						<button type="button" class="control-button" id="glossary-clear" tabindex="-1">
+							<span class="button-icon" data-icon="trash" aria-hidden="true"></span>
+							<span class="button-label">CLEAR</span>
+						</button>
+
+					</div>
+					
+					<div class="text-pane">
+						<textarea id="glossary-output" readonly></textarea>
+					</div>
+				
+				</section>
+
+				<section
+					role="tabpanel"
+					id="panel-assembler"
+					aria-labelledby="tab-assembler"
+					hidden
+				>
+					<div class="control-pane">
+						
+						<div class="undocumented">
+							<input type="checkbox" id="undoc-check">
+							<label for="undoc-check">UNDOCUMENTED<br>INSTRUCTIONS</label>
+						</div>
+						
+						<button type="button" class="control-button" id="assembler-convert" tabindex="-1">
+							<span class="button-icon" data-icon="convert" aria-hidden="true"></span>
+							<span class="button-label">CONVERT</span>
+						</button>
+						
+						<button type="button" class="control-button" id="assembler-clear" tabindex="-1">
+							<span class="button-icon" data-icon="trash" aria-hidden="true"></span>
+							<span class="button-label">CLEAR</span>
+						</button>
+					
+					</div>
+					
+					<div class="text-pane split-text-pane">
+						<div
+							id="assembler-input"
+							class="codejar-input input-textarea"
+							role="textbox"
+							aria-label="Assembler source"
+							aria-multiline="true"
+						></div>
+						<textarea id="assembler-output" readonly spellcheck="false"></textarea>
+					</div>
+				
+				</section>
+
+				<section
+					role="tabpanel"
+					id="panel-ppu-converter"
+					aria-labelledby="tab-ppu-converter"
+					hidden
+				>
+					<div class="control-pane">
+						
+						<div class="entry">
+							<label class="input-label" for="ppu-entry">PPU ADDRESS</label>
+							<input type="text" id="ppu-entry">
+						</div>
+						
+						<button type="button" class="control-button" id="ppu-convert" tabindex="-1">
+							<span class="button-icon" data-icon="convert" aria-hidden="true"></span>
+							<span class="button-label">CONVERT</span>
+						</button>
+						
+						<button type="button" class="control-button" id="ppu-clear" tabindex="-1">
+							<span class="button-icon" data-icon="trash" aria-hidden="true"></span>
+							<span class="button-label">CLEAR</span>
+						</button>
+					
+					</div>
+					
+					<div class="text-pane split-text-pane">
+						<textarea
+							id="ppu-input"
+							class="input-textarea ppu-payload-input"
+							wrap="soft"
+							spellcheck="false"
+						></textarea>
+						<textarea id="ppu-output" readonly spellcheck="false"></textarea>
+					</div>
+				
+				</section>
+
+				<section
+					role="tabpanel"
+					id="panel-tas-converter"
+					aria-labelledby="tab-tas-converter"
+					hidden
+				>
+					<div class="control-pane">
+						
+						<div class="entry">
+							
+							<div class="tas-selectors">
+								
+								<div class="tas-selector">
+									<label class="input-label" for="emu-select">EMULATOR</label>
+									<select id="emu-select">
+										<option value="fceux">FCEUX</option>
+										<option value="neshawk">NESHawk</option>
+									</select>
+								</div>
+								
+								<div class="tas-selector">
+									<label class="input-label" for="mode-select">MODE</label>
+									<select id="mode-select">
+										<option value="1p">1P</option>
+										<option value="2p">2P</option>
+									</select>
+								</div>
+								
+							</div>
+							
+						</div>
+						
+						<button type="button" class="control-button" id="tas-convert" tabindex="-1">
+							<span class="button-icon" data-icon="convert" aria-hidden="true"></span>
+							<span class="button-label">CONVERT</span>
+						</button>
+						
+						<button type="button" class="control-button" id="tas-clear" tabindex="-1">
+							<span class="button-icon" data-icon="trash" aria-hidden="true"></span>
+							<span class="button-label">CLEAR</span>
+						</button>
+					
+					</div>
+					
+					<div class="text-pane split-text-pane">
+						<textarea
+							id="tas-input"
+							class="input-textarea"
+							spellcheck="false"
+						></textarea>
+						<textarea id="tas-output" readonly spellcheck="false"></textarea>
+					</div>
+				
+				</section>
+			
+			</main>
+		
+		</div>
+	
+	</body>
+
+</html>
