@@ -1,0 +1,2 @@
+# Preserve Windows Batch File Line Endings
+*.bat -text
