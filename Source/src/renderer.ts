@@ -270,7 +270,7 @@ function formatAssemblerResult(
 		segments,
 		formatByteCode(result.byteCode),
 		result.inputs.join('\n')
-	].join('\n\n');
+	].join('\n\n') + '\n';
 }
 
 // Format a Successful PPU Conversion Result for the Output Textarea
@@ -305,7 +305,7 @@ function formatPpuResult(
 		result.inputs.join('\n')
 	);
 
-	return sections.join('\n\n');
+	return sections.join('\n\n') + '\n';
 }
 
 const ppuErrorMessages: Record<PpuErrorCode, string> = {
@@ -555,7 +555,7 @@ async function convertTas(): Promise<void> {
 				tasOutput.value = [
 					`Lag Frames: ${result.lagFrames}`,
 					result.convertedInputs.join('\n')
-				].join('\n\n');
+				].join('\n\n') + '\n';
 
 			} catch (error) {
 				showError(tasOutput, error);

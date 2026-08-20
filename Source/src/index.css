@@ -23,7 +23,16 @@
 	--accent-bright: rgb(145, 225, 255);
 	--accent-faded: #527487;
 
-	--app-background: #1e2329;
+	--app-background: #181d21;
+	--app-background-image:
+		linear-gradient(
+			to bottom,
+			rgba(255, 255, 255, 0.04) 0%,
+			rgba(255, 255, 255, 0.01) 35%,
+			transparent 55%,
+			rgba(0, 0, 0, 0.16) 100%
+		);
+
 	--carbon-background: #0e1217;
 	--widget-background: #141719;
 
@@ -41,15 +50,15 @@
 		),
 		repeating-linear-gradient(
 			135deg,
-			rgba(255, 255, 255, 0.045) 0,
-			rgba(255, 255, 255, 0.045) 1px,
+			rgba(255, 255, 255, 0.08) 0,
+			rgba(255, 255, 255, 0.08) 1px,
 			transparent 1px,
 			transparent 4px
 		),
 		repeating-linear-gradient(
 			45deg,
-			rgba(0, 0, 0, 0.14) 0,
-			rgba(0, 0, 0, 0.14) 1px,
+			rgba(0, 0, 0, 0.22) 0,
+			rgba(0, 0, 0, 0.22) 1px,
 			transparent 1px,
 			transparent 4px
 		);
@@ -126,12 +135,25 @@ textarea,
 /* ============================ Application Shell ============================ */
 
 .app-window {
-	
+
 	width: 100%;
 	height: 100%;
 	padding: 13px;
-	
-	background: var(--app-background);
+}
+
+/*
+Keep Every Exposed Application-Shell Surface on the Same Viewport-Fixed
+Gradient so the Tab Rail and Workspace Masks Remain Visually Seamless.
+*/
+.app-window,
+.tab-workspace,
+.tab-list {
+	background-color: var(--app-background);
+	background-image: var(--app-background-image);
+	background-size: 100vw 100vh;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 /* ========================= Shared Carbon Workspace ========================= */
@@ -147,7 +169,6 @@ textarea,
 	height: 100%;
 	min-height: 0;
 
-	background: var(--app-background);
 	border: 0;
 	box-shadow: none;
 }
@@ -232,7 +253,6 @@ tab, its lower lip, and the workspace have no tonal seam.
 	padding: 0;
 	overflow: visible;
 
-	background: var(--app-background);
 	border: 0;
 }
 
